@@ -26,10 +26,16 @@ client.connect();
 var passport = require('passport');
 var bcrypt = require('bcryptjs');
 
-router.get('/logout', function(req, res){
-  req.logout();   //passport provide it
+router.get('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) {
+      console.log("unable to logout:", err);
+      return next(err);
+    }
+  });   //passport provide it
   res.redirect('/'); // Successful. redirect to localhost:3000/
-});
+}); 
+
 
 function loggedIn(req, res, next) {
   if (req.user) {
